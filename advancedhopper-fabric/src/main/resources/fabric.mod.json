@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "advancedhopper",
+  "version": "${version}",
+  "name": "Advanced Hopper",
+  "description": "Advanced Hopper",
+  "authors": [
+    "Shadowdane"
+  ],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.shadowdane.advancedhopper.FabricEntryPoint"
+    ],
+    "client": [
+      "net.shadowdane.advancedhopper.client.FabricClientEntryPoint"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "26.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
