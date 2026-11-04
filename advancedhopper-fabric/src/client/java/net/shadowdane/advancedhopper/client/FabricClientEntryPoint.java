@@ -1,7 +1,7 @@
 package net.shadowdane.advancedhopper.client;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.facricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 
