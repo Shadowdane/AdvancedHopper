@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "scs",
+    "rur",
+    "scs"
+  ],
+  "key": {
+    "s": "minecraft:string",
+    "c": "minecraft:copper_ingot",
+    "r": "minecraft:redstone",
+    "u": "advancedhopper:upgrade_base"
+  },
+  "result": {
+    "id": "advancedhopper:stack_upgrade_1"
+  }
+}

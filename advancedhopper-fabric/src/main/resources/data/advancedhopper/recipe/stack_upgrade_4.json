@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "sds",
+    "rur",
+    "sds"
+  ],
+  "key": {
+    "s": "minecraft:string",
+    "d": "minecraft:diamond",
+    "r": "minecraft:redstone",
+    "u": "advancedhopper:stack_upgrade_3"
+  },
+  "result": {
+    "id": "advancedhopper:stack_upgrade_4"
+  }
+}

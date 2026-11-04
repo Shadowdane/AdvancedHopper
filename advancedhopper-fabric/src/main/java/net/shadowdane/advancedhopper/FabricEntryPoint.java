@@ -11,6 +11,10 @@ public class FabricEntryPoint implements ModInitializer {
     @Override
     public void onInitialize() {
         // Register blocks, items, block entities, and menus here as they are added.
-        LOGGER.info("Advanced Hopper initialized.");
+        LOGGER.info("Advanced Hopper: Starting Initialization.");
+
+
+        ModBlocks.initialize();
+
     }
 }

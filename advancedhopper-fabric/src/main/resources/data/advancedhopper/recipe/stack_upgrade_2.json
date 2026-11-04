@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "sis",
+    "rur",
+    "sis"
+  ],
+  "key": {
+    "s": "minecraft:string",
+    "i": "minecraft:iron_ingot",
+    "r": "minecraft:redstone",
+    "u": "advancedhopper:stack_upgrade_1"
+  },
+  "result": {
+    "id": "advancedhopper:stack_upgrade_2"
+  }
+}
