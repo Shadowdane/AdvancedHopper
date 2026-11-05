@@ -15,3 +15,5 @@ runs/
 # OS files
 .DS_Store
 Thumbs.db
+# git batch files
+git pull.bat
