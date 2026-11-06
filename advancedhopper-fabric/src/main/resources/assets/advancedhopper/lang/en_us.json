@@ -1,3 +1,9 @@
 {
-  "block.advancedhopper.advanced_hopper": "Advanced Hopper"
+  "block.advancedhopper.advanced_hopper": "Advanced Hopper",
+  "item.advancedhopper.upgrade_base": "Upgrade Base",
+  "item.advancedhopper.stack_upgrade_1": "Stack Upgrade Tier 1",
+  "item.advancedhopper.stack_upgrade_2": "Stack Upgrade Tier 2",
+  "item.advancedhopper.stack_upgrade_3": "Stack Upgrade Tier 3",
+  "item.advancedhopper.stack_upgrade_4": "Stack Upgrade Tier 4",
+  "item.advancedhopper.stack_upgrade_5": "Stack Upgrade Tier 5"
 }
