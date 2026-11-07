@@ -1,14 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "i i",
-    "gCg",
+    "gHg",
     " d "
   ],
   "key": {
-    "i": "minecraft:iron_ingot",
     "g": "minecraft:gold_ingot",
-    "C": "minecraft:copper_chest",
+    "H": "minecraft:hopper",
     "d": "minecraft:diamond"
   },
   "result": {
