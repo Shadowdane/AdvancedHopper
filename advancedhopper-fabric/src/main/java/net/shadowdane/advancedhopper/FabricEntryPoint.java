@@ -15,6 +15,7 @@ public class FabricEntryPoint implements ModInitializer {
 
         ModBlocks.initialize();
         ModItems.initialize();
+        ModMenus.initialize();
         LOGGER.info("Advanced Hopper: Completed Initialization.");
     }
 }
