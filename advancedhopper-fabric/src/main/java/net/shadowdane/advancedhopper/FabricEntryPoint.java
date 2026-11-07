@@ -1,8 +1,9 @@
 package net.shadowdane.advancedhopper;
 
-import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.fabricmc.api.ModInitializer;
 
 public class FabricEntryPoint implements ModInitializer {
     public static final String MOD_ID = "advancedhopper";
