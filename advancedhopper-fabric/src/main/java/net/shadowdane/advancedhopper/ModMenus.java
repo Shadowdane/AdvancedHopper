@@ -18,6 +18,5 @@ public final class ModMenus {
     }
 
     public static void initialize() {
-        // Loading this class registers its menu types.
     }
 }

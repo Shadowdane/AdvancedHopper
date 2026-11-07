@@ -12,8 +12,8 @@ import net.shadowdane.advancedhopper.ModItems;
 import net.shadowdane.advancedhopper.ModMenus;
 
 public final class AdvancedHopperMenu extends AbstractContainerMenu {
-    public static final int UPGRADE_SLOT_X = 13;
-    public static final int UPGRADE_SLOT_Y = 20;
+    private static final int UPGRADE_SLOT_X = 13;
+    private static final int UPGRADE_SLOT_Y = 20;
 
     private static final int HOPPER_SLOTS = HopperBlockEntity.HOPPER_CONTAINER_SIZE;
     private static final int UPGRADE_SLOT = HOPPER_SLOTS;
@@ -47,6 +47,10 @@ public final class AdvancedHopperMenu extends AbstractContainerMenu {
             }
         });
         addStandardInventorySlots(inventory, 8, 51);
+    }
+
+    public Slot getUpgradeSlot() {
+        return getSlot(UPGRADE_SLOT);
     }
 
     private static boolean isStackUpgrade(ItemStack stack) {
