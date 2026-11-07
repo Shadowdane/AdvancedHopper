@@ -17,15 +17,12 @@ public class ModItems {
 
     private static Item registerItem(String name) {
         Identifier id = Identifier.fromNamespaceAndPath(
-                FabricEntryPoint.MOD_ID, name
-        );
+                FabricEntryPoint.MOD_ID, name);
 
-        ResourceKey<Item> itemKey =
-                ResourceKey.create(Registries.ITEM, id);
+        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);
 
         Item item = new Item(
-                new Item.Properties().setId(itemKey)
-        );
+                new Item.Properties().setId(itemKey));
 
         return Registry.register(BuiltInRegistries.ITEM, itemKey, item);
     }
