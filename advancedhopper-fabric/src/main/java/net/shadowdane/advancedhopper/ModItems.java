@@ -26,7 +26,6 @@ public class ModItems {
         Item item = new Item(new Item.Properties().setId(itemKey));
         return Registry.register(BuiltInRegistries.ITEM, itemKey, item);
     }
-}
 
 public static void initialize() {
         ResourceKey<CreativeModeTab> tabKey = ResourceKey.create(
@@ -50,4 +49,5 @@ public static void initialize() {
 
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, tabKey, tab);
         FabricEntryPoint.LOGGER.info("Advanced Hopper items registered.");
+    }
 }
