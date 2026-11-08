@@ -8,5 +8,6 @@ public class FabricClientEntryPoint implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         MenuScreens.register(ModMenus.ADVANCED_HOPPER, AdvancedHopperScreen::new);
+        AdvancedHopperTooltips.initialize();
     }
 }

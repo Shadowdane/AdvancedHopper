@@ -21,7 +21,7 @@ public final class AdvancedHopperConfig {
     private static final String FILE_NAME = "advanced_hopper.toml";
     private static final String DEFAULT_RESOURCE = "/defaults/" + FILE_NAME;
     private static final int CONFIG_VERSION = 1;
-    private static final int TIER_COUNT = 5;
+    public static final int TIER_COUNT = 5;
     private static List<Integer> transferLimits;
 
     private AdvancedHopperConfig() {
@@ -33,6 +33,10 @@ public final class AdvancedHopperConfig {
 
     public static int transferLimit(int tier) {
         return transferLimits.get(tier - 1);
+    }
+
+    public static List<Integer> transferLimits() {
+        return transferLimits;
     }
 
     static List<Integer> load(Path configDirectory) {
