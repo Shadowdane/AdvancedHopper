@@ -81,6 +81,11 @@ public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockE
         }
     }
 
+    @Inject(
+            method = "createMenu(ILnet/minecraft/world/entity/player/Inventory;)Lnet/minecraft/world/inventory/AbstractContainerMenu;",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void advancedhopper$openMenu(int containerId, Inventory inventory, CallbackInfoReturnable<AbstractContainerMenu> callback) {
         if (getBlockState().is(ModBlocks.ADVANCED_HOPPER)) {
             callback.setReturnValue(new AdvancedHopperMenu(
@@ -88,12 +93,6 @@ public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockE
             ));
         }
     }
-
-    @Inject(
-            method = "createMenu(ILnet/minecraft/world/entity/player/Inventory;)Lnet/minecraft/world/inventory/AbstractContainerMenu;",
-            at = @At("HEAD"),
-            cancellable = true
-    )
 
     @Shadow
     private void setCooldown(int ticks) {
