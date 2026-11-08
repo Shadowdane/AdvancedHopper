@@ -8,8 +8,8 @@
   "item.advancedhopper.stack_upgrade_4": "Stack Upgrade (IV)",
   "item.advancedhopper.stack_upgrade_5": "Stack Upgrade (V)",
   "tooltip.advancedhopper.upgrade_slot": "Insert a Stack Upgrade",
-  "tooltip.advancedhopper.advanced_hopper": "A faster hopper that transfers items every 4 ticks. Accepts a Stack Upgrade.",
+  "tooltip.advancedhopper.advanced_hopper": "A faster hopper that transfers items every 4 ticks.\nAccepts a Stack Upgrade.",
   "tooltip.advancedhopper.upgrade_base": "Upgrade that is used to craft Stack Upgrades.",
-  "tooltip.advancedhopper.stack_upgrade": "An upgrade that lets the Advanced Hopper handle more than one item per transfer.",
+  "tooltip.advancedhopper.stack_upgrade": "An upgrade that lets the Advanced Hopper\nhandle more than one item per transfer.",
   "tooltip.advancedhopper.stack_upgrade_limit": "Item Transfer Stack Limit: %s items"
 }

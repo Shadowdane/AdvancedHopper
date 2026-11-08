@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.shadowdane.advancedhopper.ModBlocks;
 import net.shadowdane.advancedhopper.ModItems;
@@ -32,21 +31,25 @@ final class AdvancedHopperTooltips {
         }
 
         int tier = ModItems.stackUpgradeTier(stack);
-        MutableComponent description;
         if (tier > 0) {
+            int nextLine = insertTooltipLines(lines, 1, Component.translatable("tooltip.advancedhopper.stack_upgrade"));
             StackUpgradeLimitsPayload limits = serverLimits;
-            description = limits == null
-                    ? Component.translatable("tooltip.advancedhopper.stack_upgrade")
-                    : Component.translatable("tooltip.advancedhopper.stack_upgrade_limit",
-                            limits.limits().get(tier - 1));
+            if (limits != null) {
+                insertTooltipLines(lines, nextLine, Component.translatable("tooltip.advancedhopper.stack_upgrade_limit",
+                        limits.limits().get(tier - 1)));
+            }
         } else if (stack.is(ModBlocks.ADVANCED_HOPPER.asItem())) {
-            description = Component.translatable("tooltip.advancedhopper.advanced_hopper");
+            insertTooltipLines(lines, 1, Component.translatable("tooltip.advancedhopper.advanced_hopper"));
         } else if (stack.is(ModItems.UPGRADE_BASE)) {
-            description = Component.translatable("tooltip.advancedhopper.upgrade_base");
-        } else {
-            return;
+            insertTooltipLines(lines, 1, Component.translatable("tooltip.advancedhopper.upgrade_base"));
         }
+    }
 
-        lines.add(1, description.withStyle(ChatFormatting.GRAY));
+    private static int insertTooltipLines(List<Component> lines, int index, Component description) {
+        var translatedLines = description.getString().lines()
+                .map(line -> Component.literal(line).withStyle(ChatFormatting.GRAY))
+                .toList();
+        lines.addAll(index, translatedLines);
+        return index + translatedLines.size();
     }
 }
