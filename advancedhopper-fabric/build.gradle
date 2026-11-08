@@ -16,6 +16,14 @@ loom {
 
 def nightConfigVersion = '3.8.4'
 
+repositories {
+    maven {
+        name = 'TerraformersMC'
+        url = 'https://maven.terraformersmc.com/releases/'
+        content { includeGroup 'com.terraformersmc' }
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
@@ -23,6 +31,7 @@ dependencies {
     implementation "com.electronwill.night-config:toml:${nightConfigVersion}"
     include "com.electronwill.night-config:toml:${nightConfigVersion}"
     include "com.electronwill.night-config:core:${nightConfigVersion}"
+    clientCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 def modVersion = project.version.toString()

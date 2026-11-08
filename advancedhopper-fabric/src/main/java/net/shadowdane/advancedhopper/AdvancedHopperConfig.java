@@ -1,17 +1,22 @@
 package net.shadowdane.advancedhopper;
 
+import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.UnmodifiableConfig;
 import com.electronwill.nightconfig.core.io.ParsingException;
+import com.electronwill.nightconfig.core.io.WritingException;
 import com.electronwill.nightconfig.toml.TomlParser;
+import com.electronwill.nightconfig.toml.TomlWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +27,15 @@ public final class AdvancedHopperConfig {
     private static final String DEFAULT_RESOURCE = "/defaults/" + FILE_NAME;
     private static final int CONFIG_VERSION = 1;
     public static final int TIER_COUNT = 5;
+    public static final int MIN_TRANSFER_LIMIT = 1;
+    public static final int MAX_TRANSFER_LIMIT = 64;
     private static List<Integer> transferLimits;
 
     private AdvancedHopperConfig() {
     }
 
     public static void initialize() {
-        transferLimits = load(FabricLoader.getInstance().getConfigDir());
+        transferLimits = readLocalTransferLimits();
     }
 
     public static int transferLimit(int tier) {
@@ -37,6 +44,57 @@ public final class AdvancedHopperConfig {
 
     public static List<Integer> transferLimits() {
         return transferLimits;
+    }
+
+    public static List<Integer> readLocalTransferLimits() {
+        return load(FabricLoader.getInstance().getConfigDir());
+    }
+
+    public static void saveLocalTransferLimits(List<Integer> limits) throws IOException {
+        saveTransferLimits(FabricLoader.getInstance().getConfigDir(), limits);
+    }
+
+    static void saveTransferLimits(Path configDirectory, List<Integer> limits) throws IOException {
+        if (limits.size() != TIER_COUNT || limits.stream().anyMatch(limit -> !isValidTransferLimit(limit))) {
+            throw new IllegalArgumentException("Expected five transfer limits from 1 to 64");
+        }
+
+        Path configFile = configDirectory.resolve(FILE_NAME);
+        CommentedConfig config;
+        try (Reader reader = Files.newBufferedReader(configFile, StandardCharsets.UTF_8)) {
+            config = new TomlParser().parse(reader);
+        } catch (ParsingException exception) {
+            throw new IOException("Could not parse " + configFile, exception);
+        }
+
+        Object version = getValue(config.getRaw("General"), "configVersion");
+        if (version != null && integerValue(version) != CONFIG_VERSION) {
+            throw new IOException("Unsupported configVersion in " + configFile + ": " + version);
+        }
+        Object section = config.getRaw("StackUpgrade");
+        if (section != null && !(section instanceof UnmodifiableConfig)) {
+            throw new IOException("StackUpgrade must be a TOML table in " + configFile);
+        }
+
+        for (int tier = 1; tier <= TIER_COUNT; tier++) {
+            config.set(List.of("StackUpgrade", "stack_upgrade_" + tier), limits.get(tier - 1));
+        }
+
+        Path tempFile = Files.createTempFile(configDirectory, FILE_NAME, ".tmp");
+        try {
+            try (Writer writer = Files.newBufferedWriter(tempFile, StandardCharsets.UTF_8)) {
+                new TomlWriter().write(config, writer);
+            } catch (WritingException exception) {
+                throw new IOException("Could not write " + configFile, exception);
+            }
+            Files.move(tempFile, configFile, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
+    }
+
+    public static boolean isValidTransferLimit(long value) {
+        return value >= MIN_TRANSFER_LIMIT && value <= MAX_TRANSFER_LIMIT;
     }
 
     static List<Integer> load(Path configDirectory) {
@@ -83,7 +141,7 @@ public final class AdvancedHopperConfig {
         for (int tier = 1; tier <= TIER_COUNT; tier++) {
             String key = "stack_upgrade_" + tier;
             long value = integerValue(getValue(section, key));
-            if (value < 1 || value > 64) {
+            if (!isValidTransferLimit(value)) {
                 throw new IllegalStateException("Invalid bundled default for StackUpgrade." + key);
             }
             defaults.add((int) value);
@@ -114,7 +172,7 @@ public final class AdvancedHopperConfig {
             long value = integerValue(configured);
             if (configured == null) {
                 limits.add(defaultLimit);
-            } else if (value < 1 || value > 64) {
+            } else if (!isValidTransferLimit(value)) {
                 FabricEntryPoint.LOGGER.warn("StackUpgrade.{} in {} must be an integer from 1 to 64. Using {}.",
                         key, FILE_NAME, defaultLimit);
                 limits.add(defaultLimit);

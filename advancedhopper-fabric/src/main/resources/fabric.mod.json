@@ -3,7 +3,8 @@
   "id": "advancedhopper",
   "version": "${version}",
   "name": "Advanced Hopper",
-  "description": "Advanced Hopper",
+  "description": "An Upgradable Hopper, that can transfer items faster.",
+  "icon": "assets/advancedhopper/textures/item/advanced_hopper.png",
   "authors": [
     "Shadowdane"
   ],
@@ -14,9 +15,12 @@
     ],
     "client": [
       "net.shadowdane.advancedhopper.client.FabricClientEntryPoint"
-    ]    
+    ],
+    "modmenu": [
+      "net.shadowdane.advancedhopper.client.AdvancedHopperModMenu"
+    ]
   },
-    "mixins": [
+  "mixins": [
     "advancedhopper.mixins.json"
   ],
   "depends": {

@@ -18,6 +18,11 @@ final class AdvancedHopperTooltips {
     private AdvancedHopperTooltips() {
     }
 
+    static List<Integer> syncedTransferLimits() {
+        StackUpgradeLimitsPayload limits = serverLimits;
+        return limits == null ? List.of() : limits.limits();
+    }
+
     static void initialize() {
         ClientPlayNetworking.registerGlobalReceiver(StackUpgradeLimitsPayload.TYPE,
                 (payload, context) -> serverLimits = payload);

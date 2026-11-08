@@ -1,4 +1,11 @@
 {
+  "screen.advancedhopper.config.title": "Stack Upgrade Transfer Limits",
+  "screen.advancedhopper.config.save": "Save",
+  "screen.advancedhopper.config.restart_required": "Changes apply after restarting Minecraft.",
+  "screen.advancedhopper.config.invalid_limit": "Enter a whole number from 1 to 64 for each tier.",
+  "screen.advancedhopper.config.save_failed": "Could not save the config. Check the game log.",
+  "screen.advancedhopper.config.server_read_only": "These limits are set by the server.",
+  "screen.advancedhopper.config.unavailable": "—",
   "itemGroup.advancedhopper.main": "Advanced Hopper",
   "block.advancedhopper.advanced_hopper": "Advanced Hopper",
   "item.advancedhopper.upgrade_base": "Upgrade Base",
