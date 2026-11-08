@@ -14,10 +14,15 @@ loom {
     }
 }
 
+def nightConfigVersion = '3.8.4'
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    implementation "com.electronwill.night-config:toml:${nightConfigVersion}"
+    include "com.electronwill.night-config:toml:${nightConfigVersion}"
+    include "com.electronwill.night-config:core:${nightConfigVersion}"
 }
 
 def modVersion = project.version.toString()
