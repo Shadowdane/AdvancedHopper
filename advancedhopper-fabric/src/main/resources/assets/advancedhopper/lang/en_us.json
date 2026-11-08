@@ -6,6 +6,6 @@
   "item.advancedhopper.stack_upgrade_2": "Stack Upgrade Tier 2",
   "item.advancedhopper.stack_upgrade_3": "Stack Upgrade Tier 3",
   "item.advancedhopper.stack_upgrade_4": "Stack Upgrade Tier 4",
-  "item.advancedhopper.stack_upgrade_5": "Stack Upgrade Tier 5"
+  "item.advancedhopper.stack_upgrade_5": "Stack Upgrade Tier 5",
   "tooltip.advancedhopper.upgrade_slot": "Insert a Stack Upgrade"
 }
