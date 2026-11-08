@@ -40,4 +40,17 @@ public final class AdvancedHopperScreen extends AbstractContainerScreen<Advanced
             }
         }
     }
+	
+	@Override
+	protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+    super.extractTooltip(graphics, mouseX, mouseY);
+
+    Slot upgradeSlot = menu.getUpgradeSlot();
+    if (hoveredSlot == upgradeSlot && !upgradeSlot.hasItem() && menu.getCarried().isEmpty()) {
+        graphics.setTooltipForNextFrame(
+                Component.translatable("tooltip.advancedhopper.upgrade_slot"),
+                mouseX, mouseY
+			);
+		}
+	}	
 }
