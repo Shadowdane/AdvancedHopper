@@ -1,5 +1,6 @@
 package net.shadowdane.advancedhopper;
 
+import java.util.List;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -19,6 +20,13 @@ public class ModItems {
     public static final Item STACK_UPGRADE_3 = registerItem("stack_upgrade_3");
     public static final Item STACK_UPGRADE_4 = registerItem("stack_upgrade_4");
     public static final Item STACK_UPGRADE_5 = registerItem("stack_upgrade_5");
+    private static final List<Item> STACK_UPGRADES = List.of(
+            STACK_UPGRADE_1, STACK_UPGRADE_2, STACK_UPGRADE_3, STACK_UPGRADE_4, STACK_UPGRADE_5
+    );
+
+    public static int stackUpgradeTier(ItemStack stack) {
+        return STACK_UPGRADES.indexOf(stack.getItem()) + 1;
+    }
 
     private static Item registerItem(String name) {
         Identifier id = Identifier.fromNamespaceAndPath(FabricEntryPoint.MOD_ID, name);
@@ -39,11 +47,7 @@ public static void initialize() {
                 .displayItems((parameters, output) -> {
                     output.accept(ModBlocks.ADVANCED_HOPPER.asItem());
                     output.accept(UPGRADE_BASE);
-                    output.accept(STACK_UPGRADE_1);
-                    output.accept(STACK_UPGRADE_2);
-                    output.accept(STACK_UPGRADE_3);
-                    output.accept(STACK_UPGRADE_4);
-                    output.accept(STACK_UPGRADE_5);
+                    STACK_UPGRADES.forEach(output::accept);
                 })
                 .build();
 

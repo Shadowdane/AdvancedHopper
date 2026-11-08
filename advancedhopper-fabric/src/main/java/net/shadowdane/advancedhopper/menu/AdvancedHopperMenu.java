@@ -38,7 +38,7 @@ public final class AdvancedHopperMenu extends AbstractContainerMenu {
         addSlot(new Slot(upgrade, 0, UPGRADE_SLOT_X, UPGRADE_SLOT_Y) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return isStackUpgrade(stack);
+                return ModItems.stackUpgradeTier(stack) > 0;
             }
 
             @Override
@@ -51,14 +51,6 @@ public final class AdvancedHopperMenu extends AbstractContainerMenu {
 
     public Slot getUpgradeSlot() {
         return getSlot(UPGRADE_SLOT);
-    }
-
-    private static boolean isStackUpgrade(ItemStack stack) {
-        return stack.is(ModItems.STACK_UPGRADE_1)
-                || stack.is(ModItems.STACK_UPGRADE_2)
-                || stack.is(ModItems.STACK_UPGRADE_3)
-                || stack.is(ModItems.STACK_UPGRADE_4)
-                || stack.is(ModItems.STACK_UPGRADE_5);
     }
 
     @Override
@@ -78,7 +70,7 @@ public final class AdvancedHopperMenu extends AbstractContainerMenu {
         boolean moved;
         if (slotIndex < PLAYER_START) {
             moved = moveItemStackTo(stack, PLAYER_START, slots.size(), true);
-        } else if (isStackUpgrade(stack)) {
+        } else if (ModItems.stackUpgradeTier(stack) > 0) {
             moved = moveItemStackTo(stack, UPGRADE_SLOT, PLAYER_START, false);
         } else {
             moved = moveItemStackTo(stack, 0, HOPPER_SLOTS, false);
