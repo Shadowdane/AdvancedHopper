@@ -43,7 +43,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HopperBlockEntity.class)
 public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockEntity {
-    @ModifyVariable(method = "setCooldown(I)V", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     protected HopperBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
@@ -57,6 +56,12 @@ public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockE
     @Shadow
     private long tickedGameTime;
 
+    @ModifyVariable(
+        method = "setCooldown(I)V",
+        at = @At("HEAD"),
+        argsOnly = true,
+        ordinal = 0
+    )
 
     // Reduce the tick cooldown by 4 ticks.
     private int advancedhopper$reduceCooldown(int ticks) {
