@@ -93,10 +93,6 @@ public final class AdvancedHopperConfig {
         }
     }
 
-    public static boolean isValidTransferLimit(long value) {
-        return value >= MIN_TRANSFER_LIMIT && value <= MAX_TRANSFER_LIMIT;
-    }
-
     static List<Integer> load(Path configDirectory) {
         byte[] template = readTemplate();
         TomlParser parser = new TomlParser();
@@ -185,6 +181,10 @@ public final class AdvancedHopperConfig {
             }
         }
         return List.copyOf(limits);
+    }
+
+    public static boolean isValidTransferLimit(long value) {
+        return value >= MIN_TRANSFER_LIMIT && value <= MAX_TRANSFER_LIMIT;
     }
 
     private static Object getValue(Object section, String key) {

@@ -69,6 +69,22 @@ final class AdvancedHopperConfigScreen extends Screen {
                 .bounds(center + 4, buttonsY, 96, 20).build());
     }
 
+    private void save() {
+        List<Integer> limits = draft.stream().map(AdvancedHopperConfigScreen::parseLimit).toList();
+        try {
+            AdvancedHopperConfig.saveLocalTransferLimits(limits);
+            onClose();
+        } catch (IOException exception) {
+            FabricEntryPoint.LOGGER.warn("Could not save the Advanced Hopper config", exception);
+            saveFailed = true;
+        }
+    }
+
+    @Override
+    public void onClose() {
+        minecraft.gui.setScreen(parent);
+    }
+
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         super.extractRenderState(graphics, mouseX, mouseY, delta);
@@ -95,11 +111,6 @@ final class AdvancedHopperConfigScreen extends Screen {
         graphics.centeredText(font, Component.translatable(TEXT + status), center, top + 137, statusColor);
     }
 
-    @Override
-    public void onClose() {
-        minecraft.gui.setScreen(parent);
-    }
-
     private int panelTop() {
         return Math.max(4, (height - 172) / 2);
     }
@@ -122,17 +133,6 @@ final class AdvancedHopperConfigScreen extends Screen {
             return Integer.parseInt(value);
         } catch (NumberFormatException exception) {
             return 0;
-        }
-    }
-
-    private void save() {
-        List<Integer> limits = draft.stream().map(AdvancedHopperConfigScreen::parseLimit).toList();
-        try {
-            AdvancedHopperConfig.saveLocalTransferLimits(limits);
-            onClose();
-        } catch (IOException exception) {
-            FabricEntryPoint.LOGGER.warn("Could not save the Advanced Hopper config", exception);
-            saveFailed = true;
         }
     }
 }
