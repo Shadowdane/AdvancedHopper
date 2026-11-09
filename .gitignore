@@ -1,0 +1,17 @@
+# Gradle and build output
+.gradle/
+build/
+out/
+# Development worlds and game files
+run/
+runs/
+# IDE and local configuration
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+# OS files
+.DS_Store
+Thumbs.db

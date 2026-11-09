@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "advancedhopper:block/advanced_hopper"
+    },
+    "facing=north": {
+      "model": "advancedhopper:block/advanced_hopper_side"
+    },
+    "facing=east": {
+      "model": "advancedhopper:block/advanced_hopper_side",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "advancedhopper:block/advanced_hopper_side",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "advancedhopper:block/advanced_hopper_side",
+      "y": 270
+    }
+  }
+}

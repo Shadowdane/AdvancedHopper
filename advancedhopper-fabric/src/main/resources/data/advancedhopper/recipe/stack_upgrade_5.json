@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": "advancedhopper:upgrade_base",
+  "base": "advancedhopper:stack_upgrade_4",
+  "addition": "minecraft:netherite_ingot",
+  "result": {
+    "id": "advancedhopper:stack_upgrade_5"
+  }
+}

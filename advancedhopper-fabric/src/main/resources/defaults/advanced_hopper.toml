@@ -1,0 +1,21 @@
+# General mod configuration
+[General]
+	# Internal use - Do not modify this value
+	configVersion = 1
+
+[StackUpgrade]
+	# Configuration of Stack Upgrades
+
+	# Maximum items moved pulled/pushed with each installed Stack Upgrade.
+	# Valid values: 2–64. A value of 1 is the base Advanced Hopper item pulled/pushed with no upgrades.
+	
+	# Copper Tier Stack Upgrade
+	stack_upgrade_1 = 4
+	# Iron Tier Stack Upgrade
+	stack_upgrade_2 = 8
+	# Gold Tier Stack Upgrade
+	stack_upgrade_3 = 16
+	# Diamond Tier Stack Upgrade
+	stack_upgrade_4 = 32
+	# Netherite Tier Stack Upgrade
+	stack_upgrade_5 = 64

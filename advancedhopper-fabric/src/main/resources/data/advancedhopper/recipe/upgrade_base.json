@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "srs",
+    "rlr",
+    "srs"
+  ],
+  "key": {
+    "s": "minecraft:string",
+    "r": "minecraft:redstone",
+    "l": "minecraft:leather"
+  },
+  "result": {
+    "id": "advancedhopper:upgrade_base"
+  }
+}

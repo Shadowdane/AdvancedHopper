@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "gHg",
+    " d "
+  ],
+  "key": {
+    "g": "minecraft:gold_ingot",
+    "H": "minecraft:hopper",
+    "d": "minecraft:diamond"
+  },
+  "result": {
+    "id": "advancedhopper:advanced_hopper"
+  }
+}

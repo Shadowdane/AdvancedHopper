@@ -1,0 +1,22 @@
+{
+  "screen.advancedhopper.config.title": "Stack Upgrade Transfer Limits",
+  "screen.advancedhopper.config.save": "Save",
+  "screen.advancedhopper.config.restart_required": "Changes apply after restarting Minecraft.",
+  "screen.advancedhopper.config.invalid_limit": "Enter a whole number from 1 to 64 for each tier.",
+  "screen.advancedhopper.config.save_failed": "Could not save the config. Check the game log.",
+  "screen.advancedhopper.config.server_read_only": "These limits are set by the server.",
+  "screen.advancedhopper.config.unavailable": "—",
+  "itemGroup.advancedhopper.main": "Advanced Hopper",
+  "block.advancedhopper.advanced_hopper": "Advanced Hopper",
+  "item.advancedhopper.upgrade_base": "Upgrade Base",
+  "item.advancedhopper.stack_upgrade_1": "Stack Upgrade (I)",
+  "item.advancedhopper.stack_upgrade_2": "Stack Upgrade (II)",
+  "item.advancedhopper.stack_upgrade_3": "Stack Upgrade (III)",
+  "item.advancedhopper.stack_upgrade_4": "Stack Upgrade (IV)",
+  "item.advancedhopper.stack_upgrade_5": "Stack Upgrade (V)",
+  "tooltip.advancedhopper.upgrade_slot": "Insert a Stack Upgrade",
+  "tooltip.advancedhopper.advanced_hopper": "A faster hopper that transfers items every 4 ticks.\nAccepts a Stack Upgrade.",
+  "tooltip.advancedhopper.upgrade_base": "Upgrade that is used to craft Stack Upgrades.",
+  "tooltip.advancedhopper.stack_upgrade": "An upgrade that lets the Advanced Hopper\nhandle more than one item per transfer.",
+  "tooltip.advancedhopper.stack_upgrade_limit": "Item Transfer Stack Limit: %s items"
+}
