@@ -22,6 +22,11 @@ repositories {
         url = 'https://maven.terraformersmc.com/releases/'
         content { includeGroup 'com.terraformersmc' }
     }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven/'
+        content { includeModule 'maven.modrinth', 'jade' }
+    }
 }
 
 dependencies {
@@ -32,6 +37,7 @@ dependencies {
     include "com.electronwill.night-config:toml:${nightConfigVersion}"
     include "com.electronwill.night-config:core:${nightConfigVersion}"
     clientCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    compileOnly "maven.modrinth:jade:${project.jade_version}"
 }
 
 def modVersion = project.version.toString()

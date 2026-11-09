@@ -1,6 +1,6 @@
 # Advanced Hopper
 
-Advanced Hopper adds an upgradable hopper to Minecraft 26.2 on Fabric. It functions just like a regular Minecraft hopper with all pull/push/restone mechanics. It has a 4-tick transfer cooldown and a dedicated slot for one Stack Upgrade.
+Advanced Hopper adds an upgradable hopper to Minecraft 26.2 on Fabric. It functions just like a regular Minecraft hopper with all pull/push/redstone mechanics. It has a 4-tick transfer cooldown and a dedicated slot for one Stack Upgrade.
 
 Without an upgrade, the hopper moves one item per pull or push. Install a Stack Upgrade to move more items at a time between inventories.
 
@@ -12,7 +12,7 @@ A link will be added here once Advanced Hopper is published on Modrinth.
 
 | Item | Use |
 | --- | --- |
-| Advanced Hopper | Transfers items and holds one Stack Upgrade. |
+| Advanced Hopper | Upgradable Hopper that transfers items and holds one Stack Upgrade. |
 | Upgrade Base | Crafting component for Stack Upgrade (I) and smithing template for Stack Upgrade (V). |
 | Stack Upgrade (I) | Copper tier. Moves up to 4 items per pull or push by default. |
 | Stack Upgrade (II) | Iron tier. Moves up to 8 items per pull or push by default. |
@@ -24,11 +24,12 @@ A link will be added here once Advanced Hopper is published on Modrinth.
 
 | Requirement | Version |
 | --- | --- |
-| Minecraft Java Edition | 26.2 |
-| Java | 25 or newer |
-| Fabric Loader | 0.20.1 or newer |
-| Fabric API | 0.161.0+26.2 or newer for Minecraft 26.2 |
+| Minecraft Java Edition | v26.2 |
+| Java | v25 or newer |
+| Fabric Loader | v0.20.1 or newer |
+| Fabric API | v0.161.0+26.2 or newer for Minecraft v26.2 |
 | Mod Menu | Optional. Adds an in-game configuration screen. |
+| Jade | Optional. Adds on screen tooltip support. |
 
 For multiplayer, install Advanced Hopper and Fabric API on both the server and each client.
 
@@ -37,5 +38,3 @@ For multiplayer, install Advanced Hopper and Fabric API on both the server and e
 Set each tier's transfer limit in `config/advanced_hopper.toml` or through Mod Menu in single-player. Each limit can be set from 1 to 64. A limit of 1 gives that tier the same transfer size as an unupgraded Advanced Hopper.
 
 Restart Minecraft to apply single-player changes. On a dedicated server, edit the server's config and restart the server. Clients receive the server's active limits when they join.
-
-

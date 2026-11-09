@@ -28,6 +28,13 @@ public class ModItems {
         return STACK_UPGRADES.indexOf(stack.getItem()) + 1;
     }
 
+    public static ItemStack stackUpgradeForTier(int tier) {
+        if (tier < 1 || tier > STACK_UPGRADES.size()) {
+            return ItemStack.EMPTY;
+        }
+        return STACK_UPGRADES.get(tier - 1).getDefaultInstance();
+    }
+
     private static Item registerItem(String name) {
         Identifier id = Identifier.fromNamespaceAndPath(FabricEntryPoint.MOD_ID, name);
         ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);

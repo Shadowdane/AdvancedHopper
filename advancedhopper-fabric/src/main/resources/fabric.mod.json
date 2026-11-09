@@ -18,6 +18,12 @@
     ],
     "modmenu": [
       "net.shadowdane.advancedhopper.client.AdvancedHopperModMenu"
+    ],
+    "jade": [
+      "net.shadowdane.advancedhopper.compat.jade.AdvancedHopperJadePlugin"
+    ],
+    "advancedhopper:jade_client": [
+      "net.shadowdane.advancedhopper.client.compat.jade.AdvancedHopperJadeTooltip"
     ]
   },
   "mixins": [
