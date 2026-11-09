@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.shadowdane.advancedhopper.AdvancedHopperConfig;
+import net.shadowdane.advancedhopper.HopperUpgradeAccess;
 import net.shadowdane.advancedhopper.ModBlocks;
 import net.shadowdane.advancedhopper.ModItems;
 import net.shadowdane.advancedhopper.UpgradeContainer;
@@ -42,7 +43,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HopperBlockEntity.class)
-public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockEntity {
+public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockEntity implements HopperUpgradeAccess {
     protected HopperBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
@@ -126,16 +127,20 @@ public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockE
 
     @Unique
     private int advancedhopper$transferLimit() {
-        if (advancedhopper$upgrade == null || !getBlockState().is(ModBlocks.ADVANCED_HOPPER)) {
-            return 1;
-        }
-        int tier = ModItems.stackUpgradeTier(advancedhopper$upgrade.getItem(0));
+        int tier = advancedhopper$getStackUpgradeTier();
         return tier == 0 ? 1 : AdvancedHopperConfig.transferLimit(tier);
     }
 
+    @Override
+    public int advancedhopper$getStackUpgradeTier() {
+        if (advancedhopper$upgrade == null || !getBlockState().is(ModBlocks.ADVANCED_HOPPER)) {
+            return 0;
+        }
+        return ModItems.stackUpgradeTier(advancedhopper$upgrade.getItem(0));
+    }
+
     @Inject(method = "ejectItems", at = @At("HEAD"), cancellable = true)
-    private static void advancedhopper$pushItems(Level level, BlockPos pos, HopperBlockEntity hopper,
-                                                  CallbackInfoReturnable<Boolean> callback) {
+    private static void advancedhopper$pushItems(Level level, BlockPos pos, HopperBlockEntity hopper, CallbackInfoReturnable<Boolean> callback) {
         HopperBlockEntityMixin self = (HopperBlockEntityMixin) (Object) hopper;
         int limit = self.advancedhopper$transferLimit();
         if (limit == 1) {
