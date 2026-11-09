@@ -12,7 +12,7 @@ A link will be added here once Advanced Hopper is published on Modrinth.
 
 | Item | Use |
 | --- | --- |
-| Advanced Hopper | Transfers items and holds one Stack Upgrade. |
+| Advanced Hopper | Upgradable Hopper that transfers items and holds one Stack Upgrade. |
 | Upgrade Base | Crafting component for Stack Upgrade (I) and smithing template for Stack Upgrade (V). |
 | Stack Upgrade (I) | Copper tier. Moves up to 4 items per pull or push by default. |
 | Stack Upgrade (II) | Iron tier. Moves up to 8 items per pull or push by default. |
