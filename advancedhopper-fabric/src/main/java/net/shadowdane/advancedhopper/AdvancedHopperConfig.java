@@ -25,31 +25,128 @@ import net.fabricmc.loader.api.FabricLoader;
 public final class AdvancedHopperConfig {
     private static final String FILE_NAME = "advanced_hopper.toml";
     private static final String DEFAULT_RESOURCE = "/defaults/" + FILE_NAME;
+    private static final String STACK_UPGRADE_KEY_PREFIX = "stack_upgrade_";
     private static final int CONFIG_VERSION = 1;
     public static final int TIER_COUNT = 5;
     public static final int MIN_TRANSFER_LIMIT = 1;
     public static final int MAX_TRANSFER_LIMIT = 64;
-    private static List<Integer> transferLimits;
+    private static List<Integer> activeTransferLimits;
 
     private AdvancedHopperConfig() {
     }
 
     public static void initialize() {
-        transferLimits = readLocalTransferLimits();
+        activeTransferLimits = readLocalTransferLimits();
     }
 
     public static int transferLimit(int tier) {
-        return transferLimits.get(tier - 1);
+        return activeTransferLimits.get(tier - 1);
     }
 
     public static List<Integer> transferLimits() {
-        return transferLimits;
+        return activeTransferLimits;
     }
 
+    /** Reads the values on disk, including edits saved since startup. */
     public static List<Integer> readLocalTransferLimits() {
         return load(FabricLoader.getInstance().getConfigDir());
     }
 
+    static List<Integer> load(Path configDirectory) {
+        byte[] template = readTemplate();
+        TomlParser parser = new TomlParser();
+        UnmodifiableConfig defaultConfig = parser.parse(
+                new StringReader(new String(template, StandardCharsets.UTF_8))
+        );
+        List<Integer> defaults = readDefaults(defaultConfig);
+        Path configFile = configDirectory.resolve(FILE_NAME);
+
+        try {
+            Files.createDirectories(configDirectory);
+            createConfigIfMissing(configFile, template);
+
+            try (Reader reader = Files.newBufferedReader(configFile, StandardCharsets.UTF_8)) {
+                return readLimits(parser.parse(reader), defaults);
+            }
+        } catch (IOException | ParsingException exception) {
+            FabricEntryPoint.LOGGER.warn("Could not read or create {}. Using bundled defaults: {}",
+                    configFile, exception.getMessage());
+            return defaults;
+        }
+    }
+
+    private static byte[] readTemplate() {
+        try (InputStream stream = AdvancedHopperConfig.class.getResourceAsStream(DEFAULT_RESOURCE)) {
+            if (stream == null) {
+                throw new IllegalStateException("Missing bundled config: " + DEFAULT_RESOURCE);
+            }
+            return stream.readAllBytes();
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Could not read bundled config", exception);
+        }
+    }
+
+    private static List<Integer> readDefaults(UnmodifiableConfig config) {
+        Object section = config.getRaw("StackUpgrade");
+        List<Integer> defaults = new ArrayList<>(TIER_COUNT);
+        for (int tier = 1; tier <= TIER_COUNT; tier++) {
+            String key = STACK_UPGRADE_KEY_PREFIX + tier;
+            long value = integerValue(getValue(section, key));
+            if (!isValidTransferLimit(value)) {
+                throw new IllegalStateException("Invalid bundled default for StackUpgrade." + key);
+            }
+            defaults.add((int) value);
+        }
+        return List.copyOf(defaults);
+    }
+
+    private static void createConfigIfMissing(Path configFile, byte[] template) throws IOException {
+        try {
+            Files.write(configFile, template, StandardOpenOption.CREATE_NEW);
+        } catch (FileAlreadyExistsException ignored) {
+            // Keep existing config if it exists
+        }
+    }
+
+    private static List<Integer> readLimits(UnmodifiableConfig config, List<Integer> defaults) {
+        Object version = getValue(config.getRaw("General"), "configVersion");
+        if (version != null && integerValue(version) != CONFIG_VERSION) {
+            FabricEntryPoint.LOGGER.warn("Unsupported {} configVersion ({}). Using bundled defaults.",
+                    FILE_NAME, version);
+            return defaults;
+        }
+
+        Object section = config.getRaw("StackUpgrade");
+        if (section != null && !(section instanceof UnmodifiableConfig)) {
+            FabricEntryPoint.LOGGER.warn("StackUpgrade must be a TOML table in {}. Using bundled defaults.",
+                    FILE_NAME);
+            return defaults;
+        }
+
+        List<Integer> limits = new ArrayList<>(TIER_COUNT);
+        for (int tier = 1; tier <= TIER_COUNT; tier++) {
+            String key = STACK_UPGRADE_KEY_PREFIX + tier;
+            Object configured = getValue(section, key);
+            int defaultLimit = defaults.get(tier - 1);
+            long value = integerValue(configured);
+            if (configured == null) {
+                limits.add(defaultLimit);
+            } else if (!isValidTransferLimit(value)) {
+                FabricEntryPoint.LOGGER.warn("StackUpgrade.{} in {} must be an integer from 1 to 64. Using {}.",
+                        key, FILE_NAME, defaultLimit);
+                limits.add(defaultLimit);
+            } else {
+                if (value == 1) {
+                    FabricEntryPoint.LOGGER.warn("StackUpgrade.{} is set to 1 in {}. This tier gives no transfer boost.",
+                            key, FILE_NAME);
+                }
+                limits.add((int) value);
+            }
+        }
+        return List.copyOf(limits);
+    }
+
+    /** Saves the settings to disk. The active limits are loaded at the next restart. */
     public static void saveLocalTransferLimits(List<Integer> limits) throws IOException {
         saveTransferLimits(FabricLoader.getInstance().getConfigDir(), limits);
     }
@@ -77,9 +174,10 @@ public final class AdvancedHopperConfig {
         }
 
         for (int tier = 1; tier <= TIER_COUNT; tier++) {
-            config.set(List.of("StackUpgrade", "stack_upgrade_" + tier), limits.get(tier - 1));
+            config.set(List.of("StackUpgrade", STACK_UPGRADE_KEY_PREFIX + tier), limits.get(tier - 1));
         }
 
+        // Finish writing the new TOML before replacing the existing file.
         Path tempFile = Files.createTempFile(configDirectory, FILE_NAME, ".tmp");
         try {
             try (Writer writer = Files.newBufferedWriter(tempFile, StandardCharsets.UTF_8)) {
@@ -91,96 +189,6 @@ public final class AdvancedHopperConfig {
         } finally {
             Files.deleteIfExists(tempFile);
         }
-    }
-
-    static List<Integer> load(Path configDirectory) {
-        byte[] template = readTemplate();
-        TomlParser parser = new TomlParser();
-        UnmodifiableConfig defaultConfig = parser.parse(
-                new StringReader(new String(template, StandardCharsets.UTF_8))
-        );
-        List<Integer> defaults = readDefaults(defaultConfig);
-        Path configFile = configDirectory.resolve(FILE_NAME);
-
-        try {
-            Files.createDirectories(configDirectory);
-            try {
-                Files.write(configFile, template, StandardOpenOption.CREATE_NEW);
-            } catch (FileAlreadyExistsException ignored) {
-                // Keep the instance's existing config.
-            }
-
-            try (Reader reader = Files.newBufferedReader(configFile, StandardCharsets.UTF_8)) {
-                return readLimits(parser.parse(reader), defaults);
-            }
-        } catch (IOException | ParsingException exception) {
-            FabricEntryPoint.LOGGER.warn("Could not read or create {}. Using bundled defaults: {}",
-                    configFile, exception.getMessage());
-            return defaults;
-        }
-    }
-
-    private static byte[] readTemplate() {
-        try (InputStream stream = AdvancedHopperConfig.class.getResourceAsStream(DEFAULT_RESOURCE)) {
-            if (stream == null) {
-                throw new IllegalStateException("Missing bundled config: " + DEFAULT_RESOURCE);
-            }
-            return stream.readAllBytes();
-        } catch (IOException exception) {
-            throw new UncheckedIOException("Could not read bundled config", exception);
-        }
-    }
-
-    private static List<Integer> readDefaults(UnmodifiableConfig config) {
-        Object section = config.getRaw("StackUpgrade");
-        List<Integer> defaults = new ArrayList<>(TIER_COUNT);
-        for (int tier = 1; tier <= TIER_COUNT; tier++) {
-            String key = "stack_upgrade_" + tier;
-            long value = integerValue(getValue(section, key));
-            if (!isValidTransferLimit(value)) {
-                throw new IllegalStateException("Invalid bundled default for StackUpgrade." + key);
-            }
-            defaults.add((int) value);
-        }
-        return List.copyOf(defaults);
-    }
-
-    private static List<Integer> readLimits(UnmodifiableConfig config, List<Integer> defaults) {
-        Object version = getValue(config.getRaw("General"), "configVersion");
-        if (version != null && integerValue(version) != CONFIG_VERSION) {
-            FabricEntryPoint.LOGGER.warn("Unsupported {} configVersion ({}). Using bundled defaults.",
-                    FILE_NAME, version);
-            return defaults;
-        }
-
-        Object section = config.getRaw("StackUpgrade");
-        if (section != null && !(section instanceof UnmodifiableConfig)) {
-            FabricEntryPoint.LOGGER.warn("StackUpgrade must be a TOML table in {}. Using bundled defaults.",
-                    FILE_NAME);
-            return defaults;
-        }
-
-        List<Integer> limits = new ArrayList<>(TIER_COUNT);
-        for (int tier = 1; tier <= TIER_COUNT; tier++) {
-            String key = "stack_upgrade_" + tier;
-            Object configured = getValue(section, key);
-            int defaultLimit = defaults.get(tier - 1);
-            long value = integerValue(configured);
-            if (configured == null) {
-                limits.add(defaultLimit);
-            } else if (!isValidTransferLimit(value)) {
-                FabricEntryPoint.LOGGER.warn("StackUpgrade.{} in {} must be an integer from 1 to 64. Using {}.",
-                        key, FILE_NAME, defaultLimit);
-                limits.add(defaultLimit);
-            } else {
-                if (value == 1) {
-                    FabricEntryPoint.LOGGER.warn("StackUpgrade.{} is set to 1 in {}. This tier gives no transfer boost.",
-                            key, FILE_NAME);
-                }
-                limits.add((int) value);
-            }
-        }
-        return List.copyOf(limits);
     }
 
     public static boolean isValidTransferLimit(long value) {
