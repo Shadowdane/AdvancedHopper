@@ -1,6 +1,6 @@
 {
   "config.jade.plugin_advancedhopper.stack_upgrade": "Installed Stack Upgrade",
-  "tooltip.advancedhopper.jade.installed_upgrade": "Installed: %s",
+  "tooltip.advancedhopper.jade.stack_limit": " (%1$s) Stack Limit: %2$s",
   "screen.advancedhopper.config.title": "Stack Upgrade Transfer Limits",
   "screen.advancedhopper.config.save": "Save",
   "screen.advancedhopper.config.restart_required": "Changes apply after restarting Minecraft.",

@@ -4,6 +4,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.shadowdane.advancedhopper.AdvancedHopperConfig;
 import net.shadowdane.advancedhopper.FabricEntryPoint;
 import net.shadowdane.advancedhopper.HopperUpgradeAccess;
 import net.shadowdane.advancedhopper.ModBlocks;
@@ -17,6 +18,7 @@ public final class AdvancedHopperJadePlugin implements IWailaPlugin, IServerData
     public static final Identifier STACK_UPGRADE = Identifier.fromNamespaceAndPath(
             FabricEntryPoint.MOD_ID, "stack_upgrade");
     public static final String STACK_UPGRADE_DATA_KEY = STACK_UPGRADE.toString();
+    public static final String STACK_LIMIT_DATA_KEY = FabricEntryPoint.MOD_ID + ":stack_limit";
 
     @Override
     public void register(IWailaCommonRegistration registration) {
@@ -39,7 +41,11 @@ public final class AdvancedHopperJadePlugin implements IWailaPlugin, IServerData
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
         if (accessor.getBlockState().is(ModBlocks.ADVANCED_HOPPER)
                 && accessor.getBlockEntity() instanceof HopperUpgradeAccess hopper) {
-            data.putInt(STACK_UPGRADE_DATA_KEY, hopper.advancedhopper$getStackUpgradeTier());
+            int tier = hopper.advancedhopper$getStackUpgradeTier();
+            if (tier > 0) {
+                data.putInt(STACK_UPGRADE_DATA_KEY, tier);
+                data.putInt(STACK_LIMIT_DATA_KEY, AdvancedHopperConfig.transferLimit(tier));
+            }
         }
     }
 

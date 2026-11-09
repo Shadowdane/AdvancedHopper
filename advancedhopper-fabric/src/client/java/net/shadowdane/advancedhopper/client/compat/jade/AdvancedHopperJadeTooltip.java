@@ -1,9 +1,12 @@
 package net.shadowdane.advancedhopper.client.compat.jade;
 
+import java.util.List;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.HopperBlock;
+import net.shadowdane.advancedhopper.AdvancedHopperConfig;
 import net.shadowdane.advancedhopper.ModBlocks;
 import net.shadowdane.advancedhopper.ModItems;
 import net.shadowdane.advancedhopper.compat.jade.AdvancedHopperJadePlugin;
@@ -16,6 +19,8 @@ import snownee.jade.api.ui.JadeUI;
 
 public final class AdvancedHopperJadeTooltip implements AdvancedHopperJadePlugin.ClientRegistration,
         IBlockComponentProvider {
+    private static final List<String> TIER_NUMERALS = List.of("I", "II", "III", "IV", "V");
+
     @Override
     public void register(IWailaClientRegistration registration) {
         registration.registerBlockComponent(this, HopperBlock.class);
@@ -27,11 +32,18 @@ public final class AdvancedHopperJadeTooltip implements AdvancedHopperJadePlugin
             return;
         }
 
-        int tier = accessor.getServerData().getIntOr(AdvancedHopperJadePlugin.STACK_UPGRADE_DATA_KEY, 0);
+        CompoundTag data = accessor.getServerData();
+        int tier = data.getIntOr(AdvancedHopperJadePlugin.STACK_UPGRADE_DATA_KEY, 0);
+        int stackLimit = data.getIntOr(AdvancedHopperJadePlugin.STACK_LIMIT_DATA_KEY, 0);
+        if (tier < 1 || tier > TIER_NUMERALS.size() || !AdvancedHopperConfig.isValidTransferLimit(stackLimit)) {
+            return;
+        }
+
         ItemStack upgrade = ModItems.stackUpgradeForTier(tier);
         if (!upgrade.isEmpty()) {
             tooltip.add(JadeUI.smallItem(upgrade));
-            tooltip.append(Component.translatable("tooltip.advancedhopper.jade.installed_upgrade", upgrade.getHoverName()));
+            tooltip.append(Component.translatable("tooltip.advancedhopper.jade.stack_limit",
+                    TIER_NUMERALS.get(tier - 1), stackLimit));
         }
     }
 
