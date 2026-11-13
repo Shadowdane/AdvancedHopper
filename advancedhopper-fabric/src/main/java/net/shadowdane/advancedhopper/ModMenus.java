@@ -7,6 +7,8 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.shadowdane.advancedhopper.menu.AdvancedHopperMenu;
 
+import static net.shadowdane.advancedhopper.FabricEntryPoint.LOG_PREFIX;
+
 public final class ModMenus {
     public static final MenuType<AdvancedHopperMenu> ADVANCED_HOPPER = Registry.register(
             BuiltInRegistries.MENU,
@@ -18,5 +20,7 @@ public final class ModMenus {
     }
 
     public static void initialize() {
+        // Calling this method triggers the menu registration.
+        FabricEntryPoint.LOGGER.info(LOG_PREFIX + "Mod Menu support registered.");
     }
 }

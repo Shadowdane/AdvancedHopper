@@ -13,6 +13,8 @@ import net.minecraft.world.item.CreativeModeTab;
 
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 
+import static net.shadowdane.advancedhopper.FabricEntryPoint.LOG_PREFIX;
+
 public class ModItems {
     public static final Item UPGRADE_BASE = registerItem("upgrade_base");
     public static final Item STACK_UPGRADE_1 = registerItem("stack_upgrade_1");
@@ -59,6 +61,6 @@ public static void initialize() {
                 .build();
 
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, tabKey, tab);
-        FabricEntryPoint.LOGGER.info("Advanced Hopper items registered.");
+        FabricEntryPoint.LOGGER.info(LOG_PREFIX + "Items registered.");
     }
 }

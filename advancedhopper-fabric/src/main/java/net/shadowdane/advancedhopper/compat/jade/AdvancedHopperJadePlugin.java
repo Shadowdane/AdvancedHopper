@@ -14,6 +14,8 @@ import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaCommonRegistration;
 import snownee.jade.api.IWailaPlugin;
 
+import static net.shadowdane.advancedhopper.FabricEntryPoint.LOG_PREFIX;
+
 public final class AdvancedHopperJadePlugin implements IWailaPlugin, IServerDataProvider<BlockAccessor> {
     public static final Identifier STACK_UPGRADE = Identifier.fromNamespaceAndPath(
             FabricEntryPoint.MOD_ID, "stack_upgrade");
@@ -28,8 +30,8 @@ public final class AdvancedHopperJadePlugin implements IWailaPlugin, IServerData
     @Override
     public void registerClient(IWailaClientRegistration registration) {
         // Load the tooltip provider only on the client, where Jade's GUI API is available.
-        FabricLoader.getInstance().invokeEntrypoints("advancedhopper:jade_client", ClientRegistration.class,
-                entrypoint -> entrypoint.register(registration));
+        FabricLoader.getInstance().invokeEntrypoints("advancedhopper:jade_client", ClientRegistration.class, entrypoint -> entrypoint.register(registration));
+        FabricEntryPoint.LOGGER.info(LOG_PREFIX + "Jade Plugin registered.");
     }
 
     @Override
