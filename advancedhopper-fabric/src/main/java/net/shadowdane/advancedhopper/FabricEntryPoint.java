@@ -11,6 +11,7 @@ import net.shadowdane.advancedhopper.network.StackUpgradeLimitsPayload;
 
 public class FabricEntryPoint implements ModInitializer {
     public static final String MOD_ID = "advancedhopper";
+    public static final String LOG_PREFIX = "[AdvancedHopper] ";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     @Override
@@ -20,6 +21,7 @@ public class FabricEntryPoint implements ModInitializer {
         ModItems.initialize();
         ModMenus.initialize();
 
+        // Registers the StackUpgradeLimits to transfer to players on client connection to the server.
         PayloadTypeRegistry.clientboundPlay().register(
                 StackUpgradeLimitsPayload.TYPE, StackUpgradeLimitsPayload.STREAM_CODEC);
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
@@ -27,6 +29,6 @@ public class FabricEntryPoint implements ModInitializer {
                 sender.sendPacket(new StackUpgradeLimitsPayload(AdvancedHopperConfig.transferLimits()));
             }
         });
-        LOGGER.info("Advanced Hopper: Completed Initialization.");
+        LOGGER.info(LOG_PREFIX + "Completed mod initialization.");
     }
 }

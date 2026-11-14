@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTypes;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityType;
 
+import static net.shadowdane.advancedhopper.FabricEntryPoint.LOG_PREFIX;
+
 public class ModBlocks {
         public static final Block ADVANCED_HOPPER = registerBlock("advanced_hopper");
 
@@ -50,6 +52,6 @@ public class ModBlocks {
                 // Calling this method triggers the static registration above.
                 ((FabricBlockEntityType) BlockEntityTypes.HOPPER).addValidBlock(ADVANCED_HOPPER);
 
-                FabricEntryPoint.LOGGER.info("Advanced Hopper blocks registered.");
+                FabricEntryPoint.LOGGER.info(LOG_PREFIX + "Blocks registered.");
         }
 }

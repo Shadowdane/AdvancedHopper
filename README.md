@@ -37,4 +37,4 @@ For multiplayer, install Advanced Hopper and Fabric API on both the server and e
 
 Set each tier's transfer limit in `config/advanced_hopper.toml` or through Mod Menu in single-player. Each limit can be set from 1 to 64. A limit of 1 gives that tier the same transfer size as an unupgraded Advanced Hopper.
 
-Restart Minecraft to apply single-player changes. On a dedicated server, edit the server's config and restart the server. Clients receive the server's active limits when they join.
+Changes saved through Mod Menu apply immediately in single-player. Restart Minecraft after editing the TOML file manually. On a dedicated server, edit the server's config and restart the server. Clients receive the server's active limits when they join.
