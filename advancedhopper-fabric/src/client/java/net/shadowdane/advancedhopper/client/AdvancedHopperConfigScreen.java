@@ -11,6 +11,7 @@ import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -210,6 +211,8 @@ final class AdvancedHopperConfigScreen extends Screen {
             }
             EditBox field = new EditBox(font, 0, 0, FIELD_WIDTH, 20, tierLabel(tierIndex));
             field.setValue(draft.get(tierIndex));
+            field.setTooltip(Tooltip.create(Component.translatable(
+                    TEXT + "stack_upgrade_" + (tierIndex + 1) + ".tooltip")));
             Button reset = Button.builder(Component.translatable(TEXT + "reset"),
                     button -> field.setValue(defaults.get(tierIndex).toString()))
                     .bounds(0, 0, 56, 20).build();
